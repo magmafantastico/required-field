@@ -14,6 +14,204 @@
 <script src="dist/js/classList.min.js"></script>
 <![endif]-->
 
+<style>
 
+	input {
+		background: none;
+		border: 0;
+	}
+
+	.InputField {
+		border: solid 4px #000000;
+		margin: .5em 0 .5em .5em;
+		padding: .75em .75em .5em;
+		-webkit-transition: border .3s, background .3s;
+		-moz-transition: border .3s, background .3s;
+		-ms-transition: border .3s, background .3s;
+		-o-transition: border .3s, background .3s;
+		transition: border .3s, background .3s;
+		position: relative;
+		overflow: hidden;
+		width: 100%;
+		max-width: 24em;
+	}
+
+	.InputField input {
+		font-size: 1.3125em;
+		font-weight: 900;
+		text-transform: uppercase;
+		width: 100%;
+	}
+
+	.InputField label {
+		/*left: 0;*/
+		font-size: .75em;
+		position: absolute;
+		-webkit-transition: transform .3s;
+		-moz-transition: transform .3s;
+		-ms-transition: transform .3s;
+		-o-transition: transform .3s;
+		transition: transform .3s;
+		-webkit-transform: translateY(-100%);
+		-moz-transform: translateY(-100%);
+		-ms-transform: translateY(-100%);
+		-o-transform: translateY(-100%);
+		transform: translateY(-100%);
+		top: 0;
+		width: 100%;
+	}
+
+	.InputField {}
+
+	.InputField.has-focus {
+		border-color: #80d8ff;
+	}
+
+	.InputField.has-label {
+		padding: .75em .75em .5em;
+	}
+
+	.InputField.has-label label {
+		-webkit-transform: translateY(0);
+		-moz-transform: translateY(0);
+		-ms-transform: translateY(0);
+		-o-transform: translateY(0);
+		transform: translateY(0);
+	}
+
+	.InputField.is-empty {
+		background-color: #ffcdd2;
+		border-color: #d50000;
+	}
+
+</style>
+
+<body>
+
+<div class="InputField">
+
+	<label for="test01">label</label>
+	<input id="test01" type="text" class="InputField-input"/>
+
+</div>
+
+<div class="InputField">
+
+	<label for="test02">label</label>
+	<input id="test02" type="text" class="InputField-input"/>
+
+</div>
+
+<div class="InputField">
+
+	<label for="test03">label</label>
+	<input id="test03" type="text" class="InputField-input"/>
+
+</div>
+
+<script>
+
+	/* Required Field */
+
+	var RequiredField = (function () {
+
+		/**
+		 * Required Field constructor
+		 * @constructor
+		 */
+		function RequiredField(viewport) {
+
+			var self = this;
+
+			this.viewport = viewport;
+
+			this.input = {};
+
+			this.onClick = function () {
+
+				try {
+
+					self.input.viewport.focus();
+
+				} catch ( e ) { }
+
+			};
+
+			this.onFocus = function () {
+
+				self.viewport.classList.add('has-focus');
+
+				if (self.input.viewport.value)
+					self.viewport.classList.remove('is-empty');
+
+			};
+
+			this.onBlur = function () {
+
+				self.viewport.classList.remove('has-focus');
+
+				if (!self.input.viewport.value)
+					self.viewport.classList.add('is-empty');
+				else
+					self.viewport.classList.remove('is-empty');
+
+			};
+
+			this.onInput = function () {
+
+				if (self.input.viewport.value)
+				{
+					self.viewport.classList.remove('is-empty');
+					self.viewport.classList.add('has-label');
+				}
+
+			};
+
+			if (this.viewport)
+				this.init();
+
+		}
+
+		RequiredField.prototype.addListeners = function () {
+
+			try {
+
+				this.viewport.addEventListener('click', this.onClick, false);
+
+				this.input.viewport.addEventListener('focus', this.onFocus, false);
+				this.input.viewport.addEventListener('blur', this.onBlur, false);
+				this.input.viewport.addEventListener('input', this.onInput, false);
+
+			} catch ( e ) {	}
+
+		};
+
+		RequiredField.prototype.getInputElement = function () {
+
+			this.input.viewport = this.viewport.querySelector('input');
+
+			return !!this.input.viewport;
+
+		};
+
+		RequiredField.prototype.init = function () {
+
+			if (this.getInputElement())
+				this.addListeners();
+
+		};
+
+		return RequiredField;
+
+	})();
+
+	var requiredFields = document.querySelectorAll('.InputField');
+
+	for (var i = requiredFields.length; i--; )
+		requiredFields[i].requiredField = new RequiredField(requiredFields[i]);
+
+</script>
+
+</body>
 
 </html>

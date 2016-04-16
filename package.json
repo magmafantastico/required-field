@@ -4,10 +4,11 @@
   "description": "Mowe Foundation Base",
   "main": "GulpFile.js",
   "dependencies": {
+    "browser-sync": "^2.12.3",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-concat-css": "^2.2.0",
-    "gulp-image-resize": "^0.7.1",
+    "gulp-image-resize": "^0.7.2",
     "gulp-jshint": "^1.12.0",
     "gulp-minify-css": "^1.2.4",
     "gulp-rename": "^1.2.2",

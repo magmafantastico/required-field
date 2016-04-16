@@ -86,58 +86,8 @@ gulp.task('css', function() {
 		.pipe(gulp.dest(dist.css.location));
 });
 
-// JS
-
-gulp.task('js', function() {
-	gulp.src(jsfiles)
-		.pipe(jshint())
-		.pipe(jshint.reporter('default'))
-		.pipe(gulp.dest(dist.js.location + _PROJECTNAME + '.js'));
-	gulp.src([dist.js.location + _PROJECTNAME + '.js'])
-		.pipe(rename({
-			extname: '.min.js'
-		}))
-		.pipe(uglify({
-			preserveComments: 'some'
-		}))
-		.pipe(gulp.dest(dist.js.location));
-});
-
-// Images
-
-gulp.task('resizeLargePhotos', function () {
-	gulp.src(source.images.largePhotos.location + source.images.largePhotos.content)
-		.pipe(imageResize({
-			height : 960,
-			upscale : false
-		}))
-		.pipe(gulp.dest(dist.location + source.images.largePhotos.location));
-});
-
-gulp.task('tinyImages', function () {
-	gulp.src(source.images.location + source.images.content)
-		.pipe(tinypng(tinypngToken))
-		.pipe(gulp.dest(source.images.location));
-});
-
-gulp.task('tinyLargePhotos', function () {
-	gulp.src(source.images.largePhotos.location + source.images.largePhotos.content)
-		.pipe(tinypng(tinypngToken))
-		.pipe(gulp.dest(source.images.largePhotos.location));
-});
-
-gulp.task('tiny', ['tinyImages', 'tinyLargePhotos']);
-
-gulp.task('watch', function () {
-	gulp.watch(source.css.location + source.css.content, ['css']);
-});
-
-gulp.task('watch', ['css'], function () {
-	browserSync.reload();
-});
-
 // Watch scss AND html files, doing different things with each.
-gulp.task('serve', ['oai'], function () {
+gulp.task('serve', function () {
 
 	// Serve files from the root of this project
 	browserSync.init({
@@ -146,7 +96,6 @@ gulp.task('serve', ['oai'], function () {
 		}
 	});
 
-	gulp.watch(source.css.location + source.css.content, ['oai-watch']);
 	gulp.watch(source.index.content).on("change", browserSync.reload);
 
 });
