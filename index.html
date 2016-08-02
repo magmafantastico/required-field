@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <meta charset="UTF-8">
-<title></title>
+<title>Input Field</title>
 <meta name="viewport"
       content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
 <script src="dist/js/villa.min.js"></script>
@@ -24,12 +24,17 @@
 	.InputField {
 		border: solid 4px #000000;
 		margin: .5em 0 .5em .5em;
-		padding: .75em .75em .5em;
-		-webkit-transition: border .3s, background .3s;
-		-moz-transition: border .3s, background .3s;
-		-ms-transition: border .3s, background .3s;
-		-o-transition: border .3s, background .3s;
-		transition: border .3s, background .3s;
+		padding: 1.5em 1.5em 1.5em;
+		-webkit-transition: border .3s, background .3s, padding .3s;
+		-moz-transition: border .3s, background .3s, padding .3s;
+		-ms-transition: border .3s, background .3s, padding .3s;
+		-o-transition: border .3s, background .3s, padding .3s;
+		transition: border .3s, background .3s, padding .3s;
+		-webkit-transition: padding .3s;
+		-moz-transition: padding .3s;
+		-ms-transition: padding .3s;
+		-o-transition: padding .3s;
+		transition: padding .3s;
 		position: relative;
 		overflow: hidden;
 		width: 100%;
@@ -44,8 +49,9 @@
 	}
 
 	.InputField label {
-		/*left: 0;*/
-		font-size: .75em;
+		font-size: .875em;
+		font-weight: 900;
+		text-transform: uppercase;
 		position: absolute;
 		-webkit-transition: transform .3s;
 		-moz-transition: transform .3s;
@@ -57,6 +63,7 @@
 		-ms-transform: translateY(-100%);
 		-o-transform: translateY(-100%);
 		transform: translateY(-100%);
+		padding-top: .75em;
 		top: 0;
 		width: 100%;
 	}
@@ -68,7 +75,7 @@
 	}
 
 	.InputField.has-label {
-		padding: .75em .75em .5em;
+		padding: 2.25em 1.5em .75em;
 	}
 
 	.InputField.has-label label {
@@ -90,22 +97,36 @@
 
 <div class="InputField">
 
-	<label for="test01">label</label>
-	<input id="test01" type="text" class="InputField-input"/>
+	<label for="test01">nome</label>
+	<input id="test01" type="text" class="InputField-input" placeholder="nome"/>
 
 </div>
 
 <div class="InputField">
 
-	<label for="test02">label</label>
-	<input id="test02" type="text" class="InputField-input"/>
+	<label for="test02">sobrenome</label>
+	<input id="test02" type="text" class="InputField-input" placeholder="sobrenome"/>
 
 </div>
 
 <div class="InputField">
 
-	<label for="test03">label</label>
-	<input id="test03" type="text" class="InputField-input"/>
+	<label for="test03">endereço</label>
+	<input id="test03" type="text" class="InputField-input" placeholder="endereço"/>
+
+</div>
+
+<div class="InputField">
+
+	<label for="test04">cidade</label>
+	<input id="test04" type="text" class="InputField-input" placeholder="cidade"/>
+
+</div>
+
+<div class="InputField">
+
+	<label for="test05">UF</label>
+	<input id="test05" type="text" class="InputField-input" placeholder="UF"/>
 
 </div>
 
@@ -159,10 +180,13 @@
 
 			this.onInput = function () {
 
-				if (self.input.viewport.value)
-				{
+				if (self.input.viewport.value) {
 					self.viewport.classList.remove('is-empty');
 					self.viewport.classList.add('has-label');
+					self.viewport.classList.add('is-valid');
+				} else {
+					self.viewport.classList.remove('has-label');
+					self.viewport.classList.remove('is-valid');
 				}
 
 			};
@@ -172,6 +196,20 @@
 
 		}
 
+		/**
+		 * Normalize
+		 */
+		RequiredField.prototype.normalize = function () {
+
+			if (this.input.viewport.value)
+				this.viewport.classList.add('has-label');
+
+		};
+
+		/**
+		 * Add the listeners
+		 * It support IE8
+		 */
 		RequiredField.prototype.addListeners = function () {
 
 			try {
@@ -186,6 +224,10 @@
 
 		};
 
+		/**
+		 * Get the input element
+		 * @return {boolean}
+		 */
 		RequiredField.prototype.getInputElement = function () {
 
 			this.input.viewport = this.viewport.querySelector('input');
@@ -194,10 +236,15 @@
 
 		};
 
+		/**
+		 * Init the instance
+		 */
 		RequiredField.prototype.init = function () {
 
 			if (this.getInputElement())
 				this.addListeners();
+
+			this.normalize();
 
 		};
 
